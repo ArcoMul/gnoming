@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: GnomeWalk
+  m_Name: GnomeWalkBack
   serializedVersion: 4
   m_AnimationType: 2
   m_Compressed: 0
@@ -18,35 +18,35 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 6765fe35ce0a1354188d44bd5d4d0136, type: 3}
+      value: {fileID: 21300000, guid: 36f099882d0b3424790b36256ff8db0b, type: 3}
     - time: .055555556
-      value: {fileID: 21300000, guid: 267165af7095af44683020a894d86d25, type: 3}
+      value: {fileID: 21300000, guid: bf3d4dcb7a83c7848b8cea10bad7f33e, type: 3}
     - time: .111111112
-      value: {fileID: 21300000, guid: 688b690198a58f748a1b243a4ec27366, type: 3}
+      value: {fileID: 21300000, guid: 01f755487f886ae4895e003b0d549266, type: 3}
     - time: .166666672
-      value: {fileID: 21300000, guid: 04b90a777b7f5dd4bab636fc7641c43e, type: 3}
+      value: {fileID: 21300000, guid: 6fab1b4e04f78f643a5218b93735be7a, type: 3}
     - time: .222222224
-      value: {fileID: 21300000, guid: e73358a3931feec4d841bb19c75d008d, type: 3}
+      value: {fileID: 21300000, guid: b76d5d32aeec7fb4c9206936bf2ec4ba, type: 3}
     - time: .277777791
-      value: {fileID: 21300000, guid: e9cbef01c26aad7408dd9f3dcfe63fa0, type: 3}
+      value: {fileID: 21300000, guid: afef78a3eb498e14484164d1df8336a4, type: 3}
     - time: .333333343
-      value: {fileID: 21300000, guid: e51d57cc46169184c950cdc72b0854af, type: 3}
+      value: {fileID: 21300000, guid: 5ddffb42754ab1d44afd712908254b48, type: 3}
     - time: .388888896
-      value: {fileID: 21300000, guid: b381f09a53aead646ab0f8712c145545, type: 3}
+      value: {fileID: 21300000, guid: 269da48f1a5c97c4ab013aebf252fa43, type: 3}
     - time: .444444448
-      value: {fileID: 21300000, guid: 6c1262aa453a1294f8f426df9fe268e5, type: 3}
+      value: {fileID: 21300000, guid: cc40a195acf5c7a42b7a90064b111d70, type: 3}
     - time: .5
-      value: {fileID: 21300000, guid: 6d625ce1cf4a37c4e826659d10111e49, type: 3}
+      value: {fileID: 21300000, guid: 8b40a5e9c321f3c41a705efa46487488, type: 3}
     - time: .555555582
-      value: {fileID: 21300000, guid: 51cf182041352ed41af18a463209e2a2, type: 3}
+      value: {fileID: 21300000, guid: 8dd83084051f98349891f187ab45f549, type: 3}
     - time: .611111104
-      value: {fileID: 21300000, guid: c3a1c16b4e57d5e4890625d5858099a0, type: 3}
+      value: {fileID: 21300000, guid: c79cfab276185b74482f13ed93a177fd, type: 3}
     - time: .666666687
-      value: {fileID: 21300000, guid: 9b55dee88f34e724b9cc43e0b5b57685, type: 3}
+      value: {fileID: 21300000, guid: 27f023f93ae97f649a65246a46af1deb, type: 3}
     - time: .722222209
-      value: {fileID: 21300000, guid: dd11bdf4b827e0442a4dbf271cbf78db, type: 3}
+      value: {fileID: 21300000, guid: 5c564de705fa8f9429bb889845200475, type: 3}
     - time: .777777791
-      value: {fileID: 21300000, guid: 2353cb87705249244a35587864ff3d55, type: 3}
+      value: {fileID: 21300000, guid: 0978c58e198be2c44a4ace64d9504039, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212

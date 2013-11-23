@@ -95,7 +95,20 @@ public class Gnome : MonoBehaviour
 
 		if (Jumping) return;
 
-		anim.SetTrigger ("Walk");
+		Debug.Log (transform.rotation.eulerAngles);
+		if (transform.rotation.eulerAngles.z < 315 && transform.rotation.eulerAngles.z > 225) {
+			anim.SetTrigger ("WalkBack");
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else if (transform.rotation.eulerAngles.z < 45 || transform.rotation.eulerAngles.z > 315) {
+			anim.SetTrigger ("WalkSide");
+			Img.transform.localScale = new Vector3 (-Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else if (transform.rotation.eulerAngles.z < 225 && transform.rotation.eulerAngles.z > 135) {
+			anim.SetTrigger ("WalkSide");
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else {
+			anim.SetTrigger ("Walk");
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		}
 
 		 Vector3 Pos = transform.position;
 		 Vector3 Goal = canvas.GetPoint (step) + new Vector3 (0, 0, -1);
