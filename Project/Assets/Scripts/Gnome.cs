@@ -21,8 +21,6 @@ public class Gnome : MonoBehaviour
 		get{ return _currentItem;}
 		set{ _currentItem = value; }
 	}
-	public bool hasItem = false; 
-
 
 	bool CanSwitchAnimation = true;
 
@@ -42,14 +40,23 @@ public class Gnome : MonoBehaviour
 	public bool CarryItem( Item item) 
 	{
 		if (CurrentItem != null)
-						return false;
+			return false;
 		CurrentItem = item;
 		DrawVisualItem ();
+		return true;
 	}
 
-	public Item GetItem( Item item)
+	public bool HasItem ()
 	{
-		return CurrentItem;
+		return CurrentItem != null;
+	}
+
+	public Item GetItem ()
+	{
+		Item TempItem = CurrentItem;
+		CurrentItem = null;
+		DrawVisualItem ();
+		return TempItem;
 	}
 
 	
@@ -66,11 +73,16 @@ public class Gnome : MonoBehaviour
 	// Draw the current item
 	private void DrawVisualItem()
 	{
-		if (this.CurrentItem != null) {
-			// Draw the item!
-
-		} else {
-			// Delete the item
+		if (CurrentItem != null)
+		{
+			VisualItem = (GameObject) Instantiate (Resources.Load ("Items/" + CurrentItem.Type.ToString()));
+			VisualItem.transform.localScale = new Vector3 (0.8f, 0.8f, 1);
+			VisualItem.transform.parent = Img.transform;
+			VisualItem.transform.localPosition = new Vector3 (0, 1.7f, 0);
+		}
+		else if (VisualItem != null)
+		{
+			Destroy (VisualItem);
 		}
 	}
 	
@@ -116,7 +128,6 @@ public class Gnome : MonoBehaviour
 
 		if (Jumping) return;
 
-		Debug.Log (transform.rotation.eulerAngles);
 		if (transform.rotation.eulerAngles.z < 315 && transform.rotation.eulerAngles.z > 225 && CanSwitchAnimation) {
 			anim.SetTrigger ("WalkBack");
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
@@ -174,10 +185,7 @@ public class Gnome : MonoBehaviour
 
 	public void GiveProduct (Item.Types Type)
 	{
-		VisualItem = (GameObject) Instantiate (Resources.Load ("Items/" + Type.ToString()));
-		VisualItem.transform.parent = Img.transform;
-		VisualItem.transform.localPosition = new Vector3 (0, 1.7f, 0);
-		VisualItem.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+
 	}
 
 	public static float Angle (Vector3 p1, Vector3 p2)

@@ -2,7 +2,7 @@ using System;
 
 public class Item
 {
-	public enum Types {Ladder, Drill}
+	public enum Types {Ladder, Pliers}
 
 	public Types Type;
 	

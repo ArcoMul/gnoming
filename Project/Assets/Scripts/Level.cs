@@ -11,10 +11,36 @@ public class Level : MonoBehaviour
 
 	public House[] Houses;
 
+	private int _Score;
+	public int Score {
+		get {
+			return _Score;
+		}
+		set {
+			if (value != _Score) {
+				_Score = value;
+				OnScoreChange(_Score);
+			}
+		}
+	}
+
+	public delegate void OnScoreChangeEventHandler (int Score);
+	public event OnScoreChangeEventHandler ScoreChange;
+	public virtual void OnScoreChange (int Score)
+	{
+		if (ScoreChange != null) {
+			ScoreChange(Score);
+		}
+	}
+
 	void Start ()
 	{
-		Houses[0].Request(Item.Types.Drill);
-		Houses[1].Offer(Item.Types.Drill);
+		foreach (House house in Houses) {
+			house.Score += OnScore;
+		}
+
+		Houses[0].Request(Item.Types.Pliers);
+		Houses[1].Offer(Item.Types.Pliers);
 	}
 	
 	void Update ()
@@ -32,6 +58,11 @@ public class Level : MonoBehaviour
 //			Gnome g = Gnome.GetComponent<Gnome>();
 //			g.AttachCanvas (c);
 		}
+	}
+
+	void OnScore ()
+	{
+		Score++;
 	}
 
 	void SetActiveCanvas (Canvas c)

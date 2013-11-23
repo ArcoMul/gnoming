@@ -14,7 +14,11 @@ public class Doormat : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D collider)
 	{
-		Gnome gnome = collider.gameObject.transform.parent.gameObject.GetComponent<Gnome>();
-		OnGnomeEnter (gnome);
+		Debug.Log ("Tirgger Doormat");
+		if (collider.gameObject.transform.parent && collider.gameObject.transform.parent.gameObject.name == "Gnome") {
+			Debug.Log ("OnGnomeEnter");
+			Gnome gnome = collider.gameObject.transform.parent.gameObject.GetComponent<Gnome>();
+			OnGnomeEnter (gnome);
+		}
 	}
 }
