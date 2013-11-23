@@ -3,22 +3,26 @@ using System.Collections;
 
 public class Gnome : MonoBehaviour 
 {
-
-	Canvas canvas;
-
-	int step = 0;
-
+	//
+	// Visual
+	//
 	private GameObject Img;
-
 	private Animator anim;
+	private bool Jumping = false;
+	private GameObject VisualItem;
+	private Canvas canvas;
+	private int step = 0;
 
-	public bool Jumping = false;
-
-	// product carried by gnome
-	public GameObject Item;
-
-	// has product?
+	//
+	// Logic
+	//
+	private Item _currentItem;
+	public Item CurrentItem {
+		get{ return _currentItem;}
+		set{ _currentItem = value; }
+	}
 	public bool hasItem = false; 
+
 
 	bool CanSwitchAnimation = true;
 
@@ -32,29 +36,44 @@ public class Gnome : MonoBehaviour
 	/**
 	 * 
 	 *  GNome actions
+	 *  ANTON
 	 * 
 	 */
-	public void carryItem( Item item) 
+	public bool CarryItem( Item item) 
 	{
-
+		if (CurrentItem != null)
+						return false;
+		CurrentItem = item;
+		DrawVisualItem ();
 	}
 
-	public void releaseItem( Item item)
+	public Item GetItem( Item item)
 	{
-
+		return CurrentItem;
 	}
 
-
-
+	
 	/*
 	 * 
-	 * 
+	 *  Visual Methods
+	 *  ARCO!
 	 */
 	void Update ()
 	{
 		Walk ();
 	}
 
+	// Draw the current item
+	private void DrawVisualItem()
+	{
+		if (this.CurrentItem != null) {
+			// Draw the item!
+
+		} else {
+			// Delete the item
+		}
+	}
+	
 	public void StartLineDraw ()
 	{
 		Debug.Log ("New one!");
@@ -155,10 +174,10 @@ public class Gnome : MonoBehaviour
 
 	public void GiveProduct (Item.Types Type)
 	{
-		Item = (GameObject) Instantiate (Resources.Load ("Items/" + Type.ToString()));
-		Item.transform.parent = Img.transform;
-		Item.transform.localPosition = new Vector3 (0, 1.7f, 0);
-		Item.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+		VisualItem = (GameObject) Instantiate (Resources.Load ("Items/" + Type.ToString()));
+		VisualItem.transform.parent = Img.transform;
+		VisualItem.transform.localPosition = new Vector3 (0, 1.7f, 0);
+		VisualItem.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
 	}
 
 	public static float Angle (Vector3 p1, Vector3 p2)
