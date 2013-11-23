@@ -29,6 +29,7 @@ GameObject:
   - 212: {fileID: 21200002}
   - 114: {fileID: 11400002}
   - 50: {fileID: 5000000}
+  - 61: {fileID: 6100002}
   m_Layer: 0
   m_Name: House2
   m_TagString: Untagged
@@ -85,6 +86,17 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: 2.26141548, y: 1.54584193}
   m_Center: {x: .0231605545, y: .0463376977}
+--- !u!61 &6100002
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Size: {x: 7.35446692, y: 6.85055971}
+  m_Center: {x: .0766998529, y: -.256179571}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
