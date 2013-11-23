@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Level : MonoBehaviour
 {
+	public enum AngryLevels { Good, Normal, Bad, Worse}
+
 	Canvas ActiveCanvas;
 
 	int CanvasCount;
