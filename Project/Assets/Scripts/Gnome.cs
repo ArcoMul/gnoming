@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Gnome : MonoBehaviour {
+public class Gnome : MonoBehaviour 
+{
 
 	Canvas canvas;
 
-	private GameObject Img;
-
 	int step = 0;
 
-	Animator anim;
+	private GameObject Img;
 
-	bool Jumping = false;
+	private Animator anim;
 
-	GameObject Product;
+	public bool Jumping = false;
+
+	// product carried by gnome
+	public GameObject Item;
+
+	// has product?
+	public bool hasItem = false; 
 
 	void Start ()
 	{
@@ -22,6 +27,27 @@ public class Gnome : MonoBehaviour {
 		anim.SetTrigger ("Idle");
 	}
 
+	/**
+	 * 
+	 *  GNome actions
+	 * 
+	 */
+	public void carryItem( Item item) 
+	{
+
+	}
+
+	public void releaseItem( Item item)
+	{
+
+	}
+
+
+
+	/*
+	 * 
+	 * 
+	 */
 	void Update ()
 	{
 		Walk ();
@@ -101,10 +127,10 @@ public class Gnome : MonoBehaviour {
 
 	public void GiveProduct (Item.Types Type)
 	{
-		Product = (GameObject) Instantiate (Resources.Load ("Items/" + Type.ToString()));
-		Product.transform.parent = Img.transform;
-		Product.transform.localPosition = new Vector3 (0, 1.7f, 0);
-		Product.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
+		Item = (GameObject) Instantiate (Resources.Load ("Items/" + Type.ToString()));
+		Item.transform.parent = Img.transform;
+		Item.transform.localPosition = new Vector3 (0, 1.7f, 0);
+		Item.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
 	}
 
 	public static float Angle (Vector3 p1, Vector3 p2)
