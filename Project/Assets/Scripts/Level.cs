@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Level : MonoBehaviour
@@ -11,7 +12,7 @@ public class Level : MonoBehaviour
 
 	public House[] Houses;
 
-	private int _Score;
+	private int _Score = 0;
 	public int Score {
 		get {
 			return _Score;
@@ -35,34 +36,34 @@ public class Level : MonoBehaviour
 
 	void Start ()
 	{
+		InvokeRepeating ("SpawnProduct", 2, 10);
+
 		foreach (House house in Houses) {
 			house.Score += OnScore;
 		}
 
-		Houses[0].Request(Item.Types.Pliers);
-		Houses[1].Offer(Item.Types.Pliers);
 	}
 	
 	void Update ()
 	{
-		if (Input.GetMouseButtonDown (0)) {
-//			Debug.Log ("New one!");
-//
-//			GameObject canvas = ((GameObject) Instantiate (Resources.Load ("Canvas")));
-//			canvas.transform.position = new Vector3 (0,0, (float) -CanvasCount / 100);
-//			Canvas c = canvas.GetComponent<Canvas>();
-//			SetActiveCanvas(c);
-//			CanvasCount++;
-//
-//			GameObject Gnome = ((GameObject) Instantiate (Resources.Load ("Gnome"), new Vector3 (99,99,99), new Quaternion (0,0,0,0)));
-//			Gnome g = Gnome.GetComponent<Gnome>();
-//			g.AttachCanvas (c);
-		}
+
 	}
 
 	void OnScore ()
 	{
 		Score++;
+	}
+
+	public void Lose ()
+	{
+		GameObject o = (GameObject) Instantiate (Resources.Load ("Lose"));
+		o.transform.FindChild ("Score").GetComponent<TextMesh>().text = "Score: " + Score + " deals!";
+		Invoke ("GoBackToStart", 3);
+	}
+
+	void GoBackToStart ()
+	{
+		Application.LoadLevel("Start");
 	}
 
 	void SetActiveCanvas (Canvas c)
@@ -74,4 +75,69 @@ public class Level : MonoBehaviour
 		ActiveCanvas = c;
 	}
 
+	void SpawnProduct ()
+	{
+		Array values = Enum.GetValues(typeof(Item.Types));
+		System.Random random = new System.Random();
+		Item.Types RandomType = (Item.Types)values.GetValue(random.Next(values.Length));
+
+		if (!RandomRequest (RandomType)) {
+			CancelInvoke ();
+			Debug.Log ("LOSE!");
+			Lose();
+		}
+		if (!RandomOffer (RandomType)) {
+			CancelInvoke ();
+			Debug.Log ("LOSE!");
+			Lose();
+		}
+	}
+
+	private int start = -1;
+	bool RandomRequest (Item.Types Type, int n = -1)
+	{
+		Debug.Log ("Random Request");
+
+		if (start >= 0 && n == start) {
+			return false;
+		}
+
+		if (n == -1) {
+			n = (int) Mathf.Floor (UnityEngine.Random.value * Houses.Length);
+			start = n;
+		}
+
+		n = n >= Houses.Length ? 0 : n;
+
+		if (!Houses[n].Request(Type)) {
+			return RandomRequest (Type, n + 1);
+		} else {
+			start = -1;
+			return true;
+		}
+	}
+
+	bool RandomOffer (Item.Types Type, int n = -1)
+	{
+		Debug.Log ("Random Offer");
+
+		if (start >= 0 && n == start) {
+			return false;
+		}
+
+		if (n == -1) {
+			n = (int) Mathf.Floor (UnityEngine.Random.value * Houses.Length);
+			start = n;
+		}
+		
+		n = n >= Houses.Length ? 0 : n;
+		
+		if (!Houses[n].Offer(Type)) {
+			return RandomOffer (Type, n + 1);
+		} else {
+			start = -1;
+			return true;
+		}
+	}
+		              
 }

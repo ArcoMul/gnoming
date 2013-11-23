@@ -16,7 +16,7 @@ public class Gnome : MonoBehaviour
 	//
 	// Logic
 	//
-	private Item _currentItem;
+	private Item _currentItem = null;
 	public Item CurrentItem {
 		get{ return _currentItem;}
 		set{ _currentItem = value; }
@@ -41,6 +41,7 @@ public class Gnome : MonoBehaviour
 	{
 		if (CurrentItem != null)
 			return false;
+
 		CurrentItem = item;
 		DrawVisualItem ();
 		return true;

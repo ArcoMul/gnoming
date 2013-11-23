@@ -46,20 +46,32 @@ public class House : MonoBehaviour
 	 *  ANTON
 	 * 
 	 */
-	public void Request (Item.Types itemType)
+	public bool Request (Item.Types itemType)
 	{
+		if (Status != Statuses.Idle) {
+			return false;
+		}
+
 		Status = Statuses.Requesting;
 		CurrentItem = new Item () { Type = itemType };
 		DrawRequirement ();
 		InvokeRepeating ("CheckAngry", 60, 60);
+
+		return true;
 	}
 
-	public void Offer (Item.Types itemType)
+	public bool Offer (Item.Types itemType)
 	{
+		if (Status != Statuses.Idle) {
+			return false;
+		}
+
 		Status = Statuses.Offering;
 		CurrentItem = new Item () { Type = itemType };		
 		DrawOffer ();
 		InvokeRepeating ("CheckAngry", 60, 60);
+
+		return true;
 	}
 
 	private void TalkWithGnome( Gnome gnome ) 
@@ -109,33 +121,25 @@ public class House : MonoBehaviour
 	 */
 	private void DrawRequirement() 
 	{
-		// draw icon
-		Icon = (GameObject) Instantiate (Resources.Load ("Icon"));
-		Icon.transform.parent = transform;
-		Icon.transform.localPosition = new Vector3 (0, 0.7f, -0.1f);
-
-		GameObject o = (GameObject) Instantiate (Resources.Load ("Items/" + CurrentItem.Type.ToString()));
-		o.transform.parent = Icon.transform;
-		o.transform.localPosition = new Vector3 (0,0,-0.1f);
+		Transform r = transform.FindChild ("Request");
+		r.gameObject.SetActive (true);
+		r.FindChild ("Item").GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Items/Sprites/" + CurrentItem.Type.ToString());
 	}
 
 	private void DrawOffer() 
 	{
-		// draw icon
-		Icon = (GameObject) Instantiate (Resources.Load ("Icon"));
-		Icon.transform.parent = transform;
-		Icon.transform.localPosition = new Vector3 (0, 0.7f, -0.1f);
-		
-		GameObject o = (GameObject) Instantiate (Resources.Load ("Items/" + CurrentItem.Type.ToString()));
-		o.transform.parent = Icon.transform;
-		o.transform.localPosition = new Vector3 (0,0,-0.1f);
+		Transform r = transform.FindChild ("Offer");
+		r.gameObject.SetActive (true);
+		r.FindChild ("Item").GetComponent<SpriteRenderer>().sprite = Resources.Load <Sprite> ("Items/Sprites/" + CurrentItem.Type.ToString());
 	}
 
 	private void DrawIdle() 
 	{
-		if (Icon != null) {
-			Destroy (Icon);
-		}
+		Transform r = transform.FindChild ("Offer");
+		r.gameObject.SetActive (false);
+
+		r = transform.FindChild ("Request");
+		r.gameObject.SetActive (false);
 	}
 
 	private void DrawAngryState(Angry AngryState) 
@@ -145,6 +149,7 @@ public class House : MonoBehaviour
 
 	void OnGnomeEnter (Gnome gnome)
 	{
+		Debug.Log ("OnGnomeEnter");
 		TalkWithGnome (gnome);
 	}
 
