@@ -15,7 +15,7 @@ public class Canvas : MonoBehaviour
 
 	public List<Vector3> Points = new List<Vector3>();
 
-	Color c1 = new Color (0f, 0f, 0f, 0.1f);
+	Color c1 = new Color (1f, 1f, 1f, 0.4f);
 	Color c2 = Color.black;
 
 	LineRenderer LineRendererC;
@@ -61,9 +61,6 @@ public class Canvas : MonoBehaviour
 			}
 		}
 
-//		Debug.Log ("Enable: " + Enabled);
-//		Debug.Log ("Drawing: " + Drawing);
-//		Debug.Log ("MouseOver: " + MouseOver);
 		if (Enabled && Drawing && MouseOver && Input.GetMouseButton (0) && Application.platform != RuntimePlatform.Android)
 		{
 			GameObject.Find ("Debug").GetComponent<TextMesh>().text = "MouseOver";
@@ -93,7 +90,6 @@ public class Canvas : MonoBehaviour
 	public void Disable ()
 	{
 		Enabled = false;
-		// Points.RemoveAt (Points.Count - 1);
 	}
 
 	public Vector3 GetPoint (int i)
@@ -109,5 +105,11 @@ public class Canvas : MonoBehaviour
 	public void SetStep (int i, Vector3 v)
 	{
 		Points[i] = v;
+	}
+
+	public void Clear ()
+	{
+		Points.Clear();
+		LineRendererC.SetVertexCount(0);
 	}
 }

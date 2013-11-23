@@ -27,7 +27,7 @@ public class Gnome : MonoBehaviour {
 		Walk ();
 	}
 
-	void OnMouseDown ()
+	public void StartLineDraw ()
 	{
 		Debug.Log ("New one!");
 
@@ -74,9 +74,7 @@ public class Gnome : MonoBehaviour {
 		 Vector3 Pos = transform.position;
 		 Vector3 Goal = canvas.GetPoint (step) + new Vector3 (0, 0, -1);
 		 
-		Debug.Log (Vector3.Distance (Pos, Goal));
 		 if (Vector3.Distance (Pos, Goal) < 0.91f) {
-			Debug.Log ("Step:" + step);
 			if (step > 1)
 				canvas.RemoveStep (step - 2);
 
@@ -93,9 +91,12 @@ public class Gnome : MonoBehaviour {
 		transform.position = transform.position - (transform.right * 0.015f);
 
 		Img.transform.localRotation = Quaternion.Euler(new Vector3 (0,0, 360 - transform.rotation.eulerAngles.z));
-//		if (Product) {
-//			Product.transform.localRotation = Quaternion.Euler(new Vector3 (0,0, 360 - transform.rotation.eulerAngles.z));
-//		}
+	}
+
+	public void CancelWalk ()
+	{
+		if (canvas != null)
+			canvas.Clear ();
 	}
 
 	public void GiveProduct (Item.Types Type)
