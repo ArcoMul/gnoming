@@ -34,9 +34,11 @@ public class Level : MonoBehaviour
 		}
 	}
 
+	float IntervalTime = 17;
+
 	void Start ()
 	{
-		InvokeRepeating ("SpawnProduct", 2, 10);
+		Invoke ("SpawnFirstProduct", 2);
 
 		foreach (House house in Houses) {
 			house.Score += OnScore;
@@ -44,14 +46,19 @@ public class Level : MonoBehaviour
 
 	}
 	
-	void Update ()
+	void SpawnFirstProduct ()
 	{
-
+		SpawnProduct();
+		Invoke ("SpawnFirstProduct", IntervalTime);
 	}
 
 	void OnScore ()
 	{
 		Score++;
+		if (IntervalTime > 11)
+			IntervalTime--;
+		else
+			IntervalTime -= 0.5f;
 	}
 
 	public void Lose ()
