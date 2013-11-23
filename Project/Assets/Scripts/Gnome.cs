@@ -20,6 +20,8 @@ public class Gnome : MonoBehaviour
 	// has product?
 	public bool hasItem = false; 
 
+	bool CanSwitchAnimation = true;
+
 	void Start ()
 	{
 		Img = transform.FindChild ("Img").gameObject;
@@ -96,18 +98,26 @@ public class Gnome : MonoBehaviour
 		if (Jumping) return;
 
 		Debug.Log (transform.rotation.eulerAngles);
-		if (transform.rotation.eulerAngles.z < 315 && transform.rotation.eulerAngles.z > 225) {
+		if (transform.rotation.eulerAngles.z < 315 && transform.rotation.eulerAngles.z > 225 && CanSwitchAnimation) {
 			anim.SetTrigger ("WalkBack");
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else if (transform.rotation.eulerAngles.z < 45 || transform.rotation.eulerAngles.z > 315) {
+			CanSwitchAnimation = false;
+			Invoke ("AllowSwitchAnimation", 0.5f);
+		} else if ((transform.rotation.eulerAngles.z < 45 || transform.rotation.eulerAngles.z > 315) && CanSwitchAnimation) {
 			anim.SetTrigger ("WalkSide");
 			Img.transform.localScale = new Vector3 (-Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else if (transform.rotation.eulerAngles.z < 225 && transform.rotation.eulerAngles.z > 135) {
+			CanSwitchAnimation = false;
+			Invoke ("AllowSwitchAnimation", 0.5f);
+		} else if (transform.rotation.eulerAngles.z < 225 && transform.rotation.eulerAngles.z > 135 && CanSwitchAnimation) {
 			anim.SetTrigger ("WalkSide");
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else {
+			CanSwitchAnimation = false;
+			Invoke ("AllowSwitchAnimation", 0.5f);
+		} else if (CanSwitchAnimation) {
 			anim.SetTrigger ("Walk");
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+			CanSwitchAnimation = false;
+			Invoke ("AllowSwitchAnimation", 0.5f);
 		}
 
 		 Vector3 Pos = transform.position;
@@ -130,6 +140,11 @@ public class Gnome : MonoBehaviour
 		transform.position = transform.position - (transform.right * 0.015f);
 
 		Img.transform.localRotation = Quaternion.Euler(new Vector3 (0,0, 360 - transform.rotation.eulerAngles.z));
+	}
+
+	void AllowSwitchAnimation ()
+	{
+		CanSwitchAnimation = true;
 	}
 
 	public void CancelWalk ()
