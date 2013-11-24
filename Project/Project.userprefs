@@ -2,7 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Level.cs">
     <Files>
-      <File FileName="Assets\Scripts\Level.cs" Line="58" Column="18" />
+      <File FileName="Assets\Scripts\Level.cs" Line="76" Column="23" />
+      <File FileName="Assets\Tutorial.cs" Line="23" Column="13" />
+      <File FileName="Assets\Button.cs" Line="15" Column="38" />
+      <File FileName="Assets\Scripts\Gnome.cs" Line="127" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

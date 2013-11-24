@@ -12,6 +12,8 @@ public class Level : MonoBehaviour
 
 	public House[] Houses;
 
+	public GameObject Tutorial;
+
 	private int _Score = 0;
 	public int Score {
 		get {
@@ -38,12 +40,20 @@ public class Level : MonoBehaviour
 
 	void Start ()
 	{
-		Invoke ("SpawnFirstProduct", 2);
+		// Show the tutorial
+		Tutorial.SetActive (true);
+
+		// When done, start level
+		Tutorial.GetComponent<Tutorial>().Done += OnTutorialDone;
 
 		foreach (House house in Houses) {
 			house.Score += OnScore;
 		}
+	}
 
+	void OnTutorialDone ()
+	{
+		Invoke ("SpawnFirstProduct", 1);
 	}
 	
 	void SpawnFirstProduct ()
@@ -55,22 +65,20 @@ public class Level : MonoBehaviour
 	void OnScore ()
 	{
 		Score++;
-		if (IntervalTime > 11)
-			IntervalTime--;
-		else
-			IntervalTime -= 0.5f;
+		if (IntervalTime > 7)
+			IntervalTime *= 0.95f;
 	}
 
 	public void Lose ()
 	{
 		GameObject o = (GameObject) Instantiate (Resources.Load ("Lose"));
 		o.transform.FindChild ("Score").GetComponent<TextMesh>().text = "Score: " + Score + " deals!";
-		Invoke ("GoBackToStart", 3);
+		Invoke ("GoToCredits", 3);
 	}
 
-	void GoBackToStart ()
+	void GoToCredits ()
 	{
-		Application.LoadLevel("Start");
+		Application.LoadLevel("Credits");
 	}
 
 	void SetActiveCanvas (Canvas c)

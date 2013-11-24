@@ -12,6 +12,8 @@ public class Gnome : MonoBehaviour
 	private GameObject VisualItem;
 	private Canvas canvas;
 	private int step = 0;
+	public enum AnimStates {Idle, Front, Back, Left, Right};
+	public AnimStates AnimState;
 
 	//
 	// Logic
@@ -118,37 +120,41 @@ public class Gnome : MonoBehaviour
 		canvas = c;
 	}
 
+	void SwitchAnimState (AnimStates State)
+	{
+		AnimState = State;
+		if (State == AnimStates.Left || State == AnimStates.Left) { 
+			anim.SetTrigger ("Side");
+		} else {
+			anim.SetTrigger (AnimState.ToString ());
+		}
+		CanSwitchAnimation = false;
+		Invoke ("AllowSwitchAnimation", 0.3f);
+	}
+
 	void Walk ()
 	{
 		if (canvas == null || step >= canvas.Points.Count) {
 			if (canvas != null && step >= canvas.Points.Count) {
-				anim.SetTrigger ("Idle");
+				SwitchAnimState (AnimStates.Idle);
 			}
 			return;
 		}
 
 		if (Jumping) return;
 
-		if (transform.rotation.eulerAngles.z < 315 && transform.rotation.eulerAngles.z > 225 && CanSwitchAnimation) {
-			anim.SetTrigger ("WalkBack");
+		if (AnimState != AnimStates.Back && transform.rotation.eulerAngles.z <= 315 && transform.rotation.eulerAngles.z > 225 && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Back);
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-			CanSwitchAnimation = false;
-			Invoke ("AllowSwitchAnimation", 0.5f);
-		} else if ((transform.rotation.eulerAngles.z < 45 || transform.rotation.eulerAngles.z > 315) && CanSwitchAnimation) {
-			anim.SetTrigger ("WalkSide");
+		} else if (AnimState != AnimStates.Left && (transform.rotation.eulerAngles.z <= 45 || transform.rotation.eulerAngles.z > 315) && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Left);
 			Img.transform.localScale = new Vector3 (-Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-			CanSwitchAnimation = false;
-			Invoke ("AllowSwitchAnimation", 0.5f);
-		} else if (transform.rotation.eulerAngles.z < 225 && transform.rotation.eulerAngles.z > 135 && CanSwitchAnimation) {
-			anim.SetTrigger ("WalkSide");
+		} else if (AnimState != AnimStates.Right && transform.rotation.eulerAngles.z <= 225 && transform.rotation.eulerAngles.z > 135 && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Right);
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-			CanSwitchAnimation = false;
-			Invoke ("AllowSwitchAnimation", 0.5f);
-		} else if (CanSwitchAnimation) {
-			anim.SetTrigger ("Walk");
+		} else if (AnimState != AnimStates.Front && transform.rotation.eulerAngles.z <= 135 && transform.rotation.eulerAngles.z > 45 && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Front);
 			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-			CanSwitchAnimation = false;
-			Invoke ("AllowSwitchAnimation", 0.5f);
 		}
 
 		 Vector3 Pos = transform.position;
