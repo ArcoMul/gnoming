@@ -123,39 +123,33 @@ public class Gnome : MonoBehaviour
 	void SwitchAnimState (AnimStates State)
 	{
 		AnimState = State;
-		if (State == AnimStates.Left || State == AnimStates.Left) { 
+		Debug.Log ("Switch to state: " + AnimState);
+		Trigger ();
+		CanSwitchAnimation = false;
+		Invoke ("AllowSwitchAnimation", 0.5f);
+	}
+
+	void Trigger ()
+	{
+		if (AnimState == AnimStates.Left || AnimState == AnimStates.Right) { 
+			Debug.Log ("Trigger Side animation");
 			anim.SetTrigger ("Side");
 		} else {
+			Debug.Log ("Trigger "+AnimState.ToString ()+" animation");
 			anim.SetTrigger (AnimState.ToString ());
 		}
-		CanSwitchAnimation = false;
-		Invoke ("AllowSwitchAnimation", 0.3f);
 	}
 
 	void Walk ()
 	{
-		if (canvas == null || step >= canvas.Points.Count) {
-			if (canvas != null && step >= canvas.Points.Count) {
+ 		if (canvas == null || step >= canvas.Points.Count) {
+			if (AnimState != AnimStates.Idle && canvas != null && step >= canvas.Points.Count) {
 				SwitchAnimState (AnimStates.Idle);
 			}
 			return;
 		}
 
 		if (Jumping) return;
-
-		if (AnimState != AnimStates.Back && transform.rotation.eulerAngles.z <= 315 && transform.rotation.eulerAngles.z > 225 && CanSwitchAnimation) {
-			SwitchAnimState (AnimStates.Back);
-			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else if (AnimState != AnimStates.Left && (transform.rotation.eulerAngles.z <= 45 || transform.rotation.eulerAngles.z > 315) && CanSwitchAnimation) {
-			SwitchAnimState (AnimStates.Left);
-			Img.transform.localScale = new Vector3 (-Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else if (AnimState != AnimStates.Right && transform.rotation.eulerAngles.z <= 225 && transform.rotation.eulerAngles.z > 135 && CanSwitchAnimation) {
-			SwitchAnimState (AnimStates.Right);
-			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		} else if (AnimState != AnimStates.Front && transform.rotation.eulerAngles.z <= 135 && transform.rotation.eulerAngles.z > 45 && CanSwitchAnimation) {
-			SwitchAnimState (AnimStates.Front);
-			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
-		}
 
 		 Vector3 Pos = transform.position;
 		 Vector3 Goal = canvas.GetPoint (step) + new Vector3 (0, 0, -1);
@@ -168,15 +162,32 @@ public class Gnome : MonoBehaviour
 				step++;
 		}
 
-		if (step > 0)
-			canvas.SetStep (step - 1, new Vector3 (transform.position.x, transform.position.y, canvas.GetPoint(step - 1).z));
+		if (step > 1)
+			canvas.SetStep (step - 2, new Vector3 (transform.position.x, transform.position.y, canvas.GetPoint(step - 1).z));
 
-		 float Direction = Angle (Pos, Goal);
+		// float Direction = Angle (Pos, Goal);
 
-		transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Direction));
-		transform.position = transform.position - (transform.right * 0.015f);
+		// transform.rotation = Quaternion.Euler (new Vector3 (0, 0, Direction));
+		Vector3 Direction = new Vector3(Pos.x, Pos.y, 0) - new Vector3(Goal.x, Goal.y, 0);
+		Direction.Normalize ();
+		Pos = Pos - (Direction * 0.015f);
+		transform.position = new Vector3 (Pos.x, Pos.y, transform.position.z);
 
-		Img.transform.localRotation = Quaternion.Euler(new Vector3 (0,0, 360 - transform.rotation.eulerAngles.z));
+		Debug.Log ("D:" + Direction);
+
+		if (AnimState != AnimStates.Back && Direction.y < -0.4f && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Back);
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else if (AnimState != AnimStates.Left && Direction.x > 0.4f && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Left);
+			Img.transform.localScale = new Vector3 (-Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else if (AnimState != AnimStates.Right && Direction.x < -0.4f && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Right);
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		} else if (AnimState != AnimStates.Front && Direction.y > 0.4f && CanSwitchAnimation) {
+			SwitchAnimState (AnimStates.Front);
+			Img.transform.localScale = new Vector3 (Mathf.Abs(Img.transform.localScale.x), Img.transform.localScale.y, Img.transform.localScale.z);
+		}
 	}
 
 	void AllowSwitchAnimation ()
